@@ -1,0 +1,21 @@
+{
+  "author": {
+    "name": "ozkary",
+    "email": "ozkary@yahoo.com"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "cli-color": "^1.1.0",
+    "cors": "^2.7.1",
+    "express": "^4.13.4",
+    "express-jwt": "^3.3.0",
+    "jsonwebtoken": "^5.7.0",
+    "morgan": "^1.6.1"
+  },
+  "description": "jwt server demo to protect APIs",
+  "license": "MIT",
+  "main": "server.js",
+  "name": "auth-token-server-demo",
+  "repository": "https://github.com/ozkary/angularjs-auth-token-management.git",
+  "version": "0.1.0"
+}

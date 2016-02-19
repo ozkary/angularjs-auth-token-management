@@ -1,0 +1,30 @@
+<div class="jumbotron" ng-if="ctrl.identity">
+    <h1>Hello</h1>
+    <div>
+        <i class="fa fa-unlock fa-5x success"></i><br>        
+        <h2 class="form-signin-heading">{{ctrl.identity.firstname}}</h2>     
+        <div>time elapsed {{ctrl.timeElapsed}}</div>   
+    </div>
+</div>
+
+<div class="jumbotron" ng-if="!ctrl.identity">
+  <h1>Hello</h1>
+  <div>
+    <i class="fa fa-lock fa-5x"></i><br>
+      <form class="form-signin" name="frmLogin" novalidate>
+          <h2 class="form-signin-heading">Please sign in</h2>
+          <label for="inputEmail" class="sr-only">Email address</label>
+          <input type="email" id="inputEmail" ng-model="ctrl.user.username" class="form-control" placeholder="Email address" required autofocus>
+          <label for="inputPassword" class="sr-only">Password</label>
+          <input type="password" id="inputPassword" ng-model="ctrl.user.password" class="form-control" placeholder="Password" required ng-minlength="6" ng-maxlength="6">  
+          <div></div>        
+          <button class="btn btn-primary" ng-click="ctrl.login()" type="button" ng-disabled="frmLogin.$invalid">Sign in</button>
+      </form>
+   Login to get a token
+  </div>
+</div>
+
+<div class="row marketing">    
+      <button class="btn btn-lg btn-success" type="submit" ng-click="ctrl.ping()">Ping - No token needed <i class="fa fa-unlock"></i></button>
+      <button class="btn btn-lg btn-danger" ng-if="ctrl.identity" type="button" ng-click="ctrl.token()">Validate Token <i class="fa fa-lock"></i></button>
+ </div>
