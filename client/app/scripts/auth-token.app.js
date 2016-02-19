@@ -19,8 +19,8 @@
 (function () {
     'use strict';   
     var app = angular.module('ozkary.authtoken', ['ngRoute']);
-    app.config(['$routeProvider', appConfig]);
-    app.run(['$rootScope', '$location', runApp]);
+    app.config(['$routeProvider', '$httpProvider', appConfig]);
+    app.run(['$rootScope', '$location', '$http', '$svcAuth', runApp]);
 
     var appSettings = {
         apiUrl: 'http://localhost:3001/api',
@@ -29,14 +29,19 @@
     }
     app.constant('$appSettings', appSettings);
        
-    function runApp($rootScope,$location) {
-        $rootScope.$on('$locationChangeSuccess', function () {
-            // $rootScope.menu = $location.path();
+    function runApp($rootScope, $location, $http, $svcAuth) {
+        $rootScope.$on('$locationChangeSuccess', function () {          
             $rootScope.route = $location.$$path;           
         });
+       
+        //a way to add tokens to all requests via service
+        //$http.defaults.headers.common = { 'Authorization': 'Bearer jdjs...' };
+
+        //initialize any auth token already in storage
+        $svcAuth.waitForAuth();              
     }
    
-    function appConfig($routeProvider) {
+    function appConfig($routeProvider, $httpProvider) {
         $routeProvider
           .when('/', {
               templateUrl: 'views/main.html',
@@ -51,6 +56,21 @@
           .otherwise({
               redirectTo: '/'
           });
+
+        //add token interceptor
+        //$httpProvider.interceptors.push('$svcToken');
+
+        //a way to add tokens to all requests via provider
+        //$httpProvider.defaults.headers.common = { 'Authorization': 'Bearer jdjs...' };
+        
+        ////or just post 
+        //$httpProvider.defaults.headers.post = { 'Authorization': 'Bearer jdjs...' };
+
+        ////or just gets
+        //$httpProvider.defaults.headers.post = { 'Authorization': 'Bearer jdjs...' };
+
+        //interceptor configuration
+        $httpProvider.interceptors.push('$svcToken');
     }
 
 })();

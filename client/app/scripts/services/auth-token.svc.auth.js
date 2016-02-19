@@ -20,38 +20,39 @@
     'use strict';
     var svcName = '$svcAuth';
     var app = angular.module('ozkary.authtoken');
-    app.factory(svcName, ['$q', '$http', '$appSettings', '$window',svcAuth]);
+    app.factory(svcName, ['$q', '$appSettings', '$window',svcAuth]);
 
-    function svcAuth($q, $http, $appSettings, $window) {
+
+    /*
+    *   auth manager service
+    *
+    */
+    function svcAuth($q, $appSettings, $window) {
         
         var baseUrl = $appSettings.apiUrl;
         var svc = {
             name: svcName,
+            authHeaderName: 'Authorization',
+            token: null,
             identity: null,
-            isAuth: isAuthenticated,
-            login: login,
-            token:null
+            isAuth: isAuthenticated,            
+            logout: logout,
+            login:processToken,
+            getToken: getToken,
+            saveToken:saveToken,
+            getAuthHeader: getAuthHeader,
+            getAuthToken: getAuthToken,
+            waitForAuth: waitForAuth
         }
-
+      
 
         /**
-         * login the user
-         * @param {type} user
-         * @returns {type} 
+         * removes the auth token
          */
-        function login(user) {
-            var deferred = $q.defer();
-            var url = baseUrl + '/login';
-            $http.post(url, user).then(function (resp) {
-                var token = resp.headers($appSettings.http.header);
-                processToken(token);
-                var status = resp.data;
-                deferred.resolve(status);
-            }, function (err) {
-                deferred.reject(err);
-            });
-
-            return deferred.promise;
+        function logout() {
+            svc.token = null;
+            svc.identity = null;
+            delete $window.localStorage['authToken'];            
         }
 
         /**
@@ -75,7 +76,51 @@
         }
 
         function saveToken(token) {
+            //persisten in memory as a property            
             svc.token = token;
+            
+            //we need to persist the token to handle page refresh
+            $window.localStorage['authToken'] = token;          
+        }
+
+        function getToken() {
+            //from memory
+            var token = svc.token;
+                       
+            //from storage
+            if (!token) {
+                token = $window.localStorage['authToken'];
+            }
+            
+            return token;
+           
+        }
+
+        /**
+         * returns a json with the header format
+         * @returns {type} 
+         */
+        function getAuthHeader() {
+            var content = getAuthToken();
+            var header = { 'Authorization': content };                    
+            return header;
+        }
+
+        /**
+         * returns the token value properly formatted
+         * @returns {type} 
+         */
+        function getAuthToken() {
+            var content = 'Bearer ' + svc.getToken();
+            return content;
+        }
+
+        /**
+         * checks for persisted token
+         */
+        function waitForAuth() {
+            var token = getToken();
+            processToken(token);   
         }
 
         return svc;

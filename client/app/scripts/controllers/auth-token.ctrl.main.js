@@ -30,12 +30,18 @@
 
         ctrl.login = function () {
 
-            $svcAuth.login(ctrl.user).then(function (auth) {
-                $svcMsg.success(auth);                
-                ctrl.identity = $svcAuth.identity;               
+            $svcApi.login(ctrl.user).then(function (auth) {
+                $svcMsg.success(auth);
+                ctrl.identity = $svcAuth.identity;
+                             
             }, function (err) {
                 $svcMsg.error(err);
             });
+        }
+
+        ctrl.logout = function () {
+            $svcAuth.logout();
+            ctrl.identity = $svcAuth.identity;
         }
         
         ctrl.ping = function () {
@@ -58,21 +64,6 @@
                 var msg = err.data.text;
                 $svcMsg.error(msg);
             });
-        }
-
-        /**
-         * simple time elapse to compare when token expires
-         */
-        function setTimer() {
-            var start = (new Date()).getTime();
-           
-
-            $interval(function () {
-                var now = (new Date()).getTime();
-                var diff = now - start;//1000
-                var seconds =Math.floor(diff / 1000);
-                ctrl.timeElapsed = seconds + " seconds ago";
-            }, 10000);
         }
     } 
    

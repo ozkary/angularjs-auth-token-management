@@ -20,9 +20,9 @@
     'use strict';
     var svcName = '$svcMsg';
     var app = angular.module('ozkary.authtoken');
-    app.factory(svcName, ['$http','$appSettings', '$timeout','$rootScope',svcApi]);
+    app.factory(svcName, ['$http', '$appSettings', '$timeout', '$rootScope', '$log', svcApi]);
 
-    function svcApi($http, $appSettings, $timeout, $rootScope) {
+    function svcApi($http, $appSettings, $timeout, $rootScope, $log) {
         var baseUrl = $appSettings;
         var svc = {
             name: svcName,
@@ -32,7 +32,7 @@
 
         function success(msg) {
             var message = msg || $appSettings.messages.success;            
-            showSimpleToast('#toastok', msg);
+            showSimpleToast('#toastok', message);
         }
 
         function error(msg) {           
@@ -46,7 +46,7 @@
          * @param {type} msg
          */
         function showSimpleToast(id, msg) {
-            console.log(msg);
+            $log.log(msg);
             $rootScope.message = msg;
             $(id).modal();
 

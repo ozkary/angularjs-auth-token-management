@@ -9,7 +9,7 @@
     <div id="secured" ng-if="ctrl.identity">
         <h1>hi {{ctrl.identity.firstname}}</h1>
         <div class="lead" ng-if="ctrl.user">
-            <div><img class="img-circle" src="{{ctrl.user.picture}}" alt="my pic" /></div>
+            <div><img class="img-circle" ng-src="{{ctrl.user.picture}}" alt="my pic" /></div>
 
             <div class="container">
                 <h2>My Profile</h2>

@@ -33,6 +33,7 @@ var messages = require('./messages.js');		//message module
  * Application configuration
  * 
  * */
+//minimal web framework for sever apps
 var app = express();
 
 //Configure the express middleware to protect APIs
@@ -40,6 +41,7 @@ var appSecret = process.env.SECRET || 'ozkary.com2016';
 var appAuthHeader = 'Authorization';    //auth header name
 //app.set('superSecret', config.secret); // secret variable
 
+//Middleware for user authorization and authentication with JSON Web Token
 var authenticate = exjwt( {
 	secret: new Buffer(appSecret)
 });
@@ -51,7 +53,7 @@ var authenticate = exjwt( {
 var baseApiRoute = '/api'; 
 	
 app.use(cors());	
-//app.use(morgan('combined'));	//uncomment to tract api calls	
+//app.use(morgan('combined'));	//uncomment to trace api calls	(verbose)
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 	
@@ -60,11 +62,12 @@ app.use('/api/about', authenticate);
 app.use('/api/token', authenticate);
 
 //route middleware for protected routes
-app.use(function (err, req, res, next) {      
+app.use(function (err, req, res, next) {
+     
 	if (err.constructor.name === 'UnauthorizedError') {
-        helper.send(res, 401, { text: ' Unauthorized ' + req.url });
+        helper.send(res, 401, { text: ' Unauthorized. No Authorization: Bearer found ' + req.url });
     }
-
+   
 });
 
 
@@ -75,24 +78,34 @@ app.get('/api/ping', function (req, res) {
     helper.send(res, 200, { text:msg});
 });
 
-//Route: api/about
-app.get('/api/about', function (req, res) {
-    var msg = helper.getMessage(req, ' token validated');
-    var user = helper.getUserFromToken(req);
-    var profile =  users.profile(user);     //demo to get additional information     
-    helper.setSignedToken(user, res);       //renews token
-    helper.send(res, 200, profile);
+//Route: api/about  Secured
+//use to get the extended profile information
+app.get('/api/about', function (req, res) {    
+    var user = helper.getUserFromToken(req, res);
+    if (user) {
+        var profile = users.profile(user);     //demo to get additional information   
+        var claims = users.userClaims(user);     //demo to get claims only
+        helper.setSignedToken(claims, res);       //renews token
+        var msg = ' '+ helper.getMessage(req, profile.username);        
+        helper.send(res, 200, profile, msg);
+    }   
 })
 
-//Route: api/token
-app.get('/api/token', function (req, res) {    
-    var user = helper.getUserFromToken(req);       
-    helper.setSignedToken(user, res);  
-    var msg = helper.getMessage(req, user.username + ' token refreshed');    
-    helper.send(res, 200, { text: "OK. Extending your token" });    
+//Route: api/token Secured
+//use it to refresh the token
+app.get('/api/token', function (req, res) {
+    var user = helper.getUserFromToken(req, res);
+    if (user) {
+        var claims = users.userClaims(user);     //demo to get claims only
+        helper.setSignedToken(claims, res);
+        var msg = helper.getMessage(req, user.username + ' token refreshed');
+        helper.send(res, 200, { text: msg });  
+    } 
+     
 })
 
 //Route: api/login
+//login
 app.post('/api/login', function (req, res) {
     
     var username = req.body.username;
@@ -149,10 +162,10 @@ helper.setSignedToken = function(user, res) {
 	var token = '';
     try {		
         
-        token = jwt.sign(user, appSecret, { 'expiresIn': '160' }); //in seconds
+        token = jwt.sign(user, appSecret, { 'expiresIn': 60 }); //in seconds
         if (res) {
-            res.setHeader(appAuthHeader, token);                            //adding header with token        
-            res.setHeader('Access-Control-Expose-Headers', appAuthHeader);  //allowing cors access
+            res.setHeader(appAuthHeader, token);                            //adding header with token    
+            res.setHeader('Access-Control-Expose-Headers', appAuthHeader);  //allowing cors access                
         }
 	} catch (err) {
 		helper.send(null, 500, { text: err });
@@ -161,18 +174,19 @@ helper.setSignedToken = function(user, res) {
 	return token;
 }
 
-helper.getUserFromToken = function(req){
+helper.getUserFromToken = function(req, res){
     var data = null;
     if (req) {
-        var token = req.headers[appAuthHeader];
-     
-        jwt.verify(token, appSecret, function (err, decoded) {
-            if (err) {
-                helper.send(res, 401, { text: err });                
-            } else {
-                data = decoded;
-            }           
-        });
+        var token = req.headers[appAuthHeader.toLowerCase()];
+       // console.log(clc.green("Token: "+ token));
+        
+        try {
+            token = token.replace('Bearer ', '');   //strip unwanted characters                   
+            data = jwt.decode(token);               //decode the payload - user claims              
+        }
+        catch (err){
+            helper.send(res, 500, { text: err });
+        }        
 
     }
 
@@ -186,14 +200,15 @@ helper.getMessage = function (req, msg) {
 }
 
 
-helper.send = function(res, status, json) {
+helper.send = function(res, status, json, other) {
     if (res) {        
 		res.status(status).send(json);
 	}
     
-    var text = json.text ? json.text : json;
+    var text = json.text ? json.text : JSON.stringify(json);
+    status += other || ''; 
     var msg = helper.getDate() + ' : status: ' + status + ' ' + text;
-    messages.add(msg);
+    
 	console.log(clc.yellow(msg));
 }
 
@@ -202,5 +217,3 @@ helper.getDate = function () {
 	var dt = (new Date()).toLocaleString();
 	return dt;
 }
-
-//for new requests: Authorization: Bearer 

@@ -17,6 +17,9 @@ body {
   padding-right: 15px;
 }
 
+.toolbar{
+    margin:10px;
+}
 /* Custom page header */
 .header {
   border-bottom: 1px solid #e5e5e5;

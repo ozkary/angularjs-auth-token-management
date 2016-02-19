@@ -25,13 +25,14 @@
        
     function ctrlAbout($svcApi, $svcMsg, $svcAuth) {
         var ctrl = this;
-        ctrl.name = ctrlName;
-        ctrl.user = null;
+        ctrl.name = ctrlName;       
         ctrl.identity = $svcAuth.identity;
+        ctrl.user = ctrl.identity? ctrl.identity.profile : null;
 
         ctrl.profile = function () {
             $svcApi.about().then(function (resp) {
                 ctrl.user = resp.data;
+                $svcAuth.identity.profile = resp.data;
                 $svcMsg.success();
             }, function (err) {
                 var msg = err.data.text;

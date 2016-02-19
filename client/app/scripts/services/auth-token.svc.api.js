@@ -20,15 +20,16 @@
     'use strict';
     var svcName = '$svcApi';
     var app = angular.module('ozkary.authtoken');
-    app.factory(svcName, ['$http', '$appSettings', svcApi]);
+    app.factory(svcName, ['$q','$http', '$appSettings','$svcAuth', svcApi]);
 
-    function svcApi($http,$appSettings) {
+    function svcApi($q,$http, $appSettings, $svcAuth) {
         var baseUrl = $appSettings.apiUrl;
         var svc = {
             name: svcName,
             ping: ping,          
             about: about,
-            token:token
+            token: token,
+            login:login
         }
 
         /**
@@ -57,8 +58,40 @@
          */
         function about() {
             var url = baseUrl + '/about';
-            var promise = $http.get(url);
+            var header = {};
+
+            //example of how it can be done for a single request
+            //var header = { headers: { 'Authorization': 'Bearer  jdjs...' } };
+            var header = {};
+            header['headers'] = $svcAuth.getAuthHeader();          
+            var promise = $http.get(url, header);
+
             return promise;
+        }
+
+        /**
+         * handles the login api
+         * @param {type} user
+         * @returns {type} 
+         */
+        function login(user) {            
+            var deferred = $q.defer();
+            var url = baseUrl + '/login';
+
+            $http.post(url, user).then(function (resp) {
+                var token = resp.headers($appSettings.http.header);
+                $svcAuth.login(token);
+
+                //configuring a global way to set the token after login
+                $http.defaults.headers.common = $svcAuth.getAuthHeader();
+
+                var status = resp.data;
+                deferred.resolve(status);
+            }, function (err) {
+                deferred.reject(err);
+            });
+
+            return deferred.promise;
         }
 
         return svc;
