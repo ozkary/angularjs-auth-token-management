@@ -54,6 +54,7 @@
                 if (token){
                     $svcAuth.login(token);
                     $log.log('processing new token');
+                    //handle the case for auto refresh due to iactivity
                 }
             }            
         }

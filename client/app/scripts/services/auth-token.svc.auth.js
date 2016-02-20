@@ -70,7 +70,15 @@
         function processToken(token) {
             if (token){
                 var payload = token.split('.')[1];      //get the payload
-                svc.identity = JSON.parse($window.atob(payload));    //payload with claims
+                var newIdentity = JSON.parse($window.atob(payload));    //payload with claims
+                if (svc.identity) {
+                    //update props with new claims
+                    svc.identity.firstname = newIdentity.firstname;
+                    svc.identity.username = newIdentity.username;
+                } else {
+                    svc.identity = newIdentity;
+                }
+
                 saveToken(token);
             }            
         }
@@ -78,8 +86,9 @@
         function saveToken(token) {
             //persisten in memory as a property            
             svc.token = token;
-            
-            //we need to persist the token to handle page refresh
+           
+            //0g-todo 3 save toke to storage
+            //we need to persist the token to  to storage to handle page refresh
             $window.localStorage['authToken'] = token;          
         }
 

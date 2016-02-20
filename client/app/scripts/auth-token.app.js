@@ -37,8 +37,9 @@
         //a way to add tokens to all requests via service
         //$http.defaults.headers.common = { 'Authorization': 'Bearer jdjs...' };
 
+        //0g-todo 4 initialize token from storage
         //initialize any auth token already in storage
-        $svcAuth.waitForAuth();              
+         $svcAuth.waitForAuth();              
     }
    
     function appConfig($routeProvider, $httpProvider) {
@@ -69,6 +70,7 @@
         ////or just gets
         //$httpProvider.defaults.headers.post = { 'Authorization': 'Bearer jdjs...' };
 
+        //0g-todo 5 add interceptors
         //interceptor configuration
         $httpProvider.interceptors.push('$svcToken');
     }

@@ -98,7 +98,7 @@ app.get('/api/token', function (req, res) {
     if (user) {
         var claims = users.userClaims(user);     //demo to get claims only
         helper.setSignedToken(claims, res);
-        var msg = helper.getMessage(req, user.username + ' token refreshed');
+        var msg = helper.getMessage(req, user.username + ' token is valid');
         helper.send(res, 200, { text: msg });  
     } 
      
@@ -131,7 +131,7 @@ var port = process.env.PORT || 3001;
 
 http.createServer(app).listen(port, function (err) {
 
-	var routes = [{ route: '/ping', secured: false }, { route: '/login', secured: true }, { route: '/about', secured: true }, { route: '/token', secured: true }];
+	var routes = [{ route: '/ping', secured: false }, { route: '/login', secured: false }, { route: '/about', secured: true }, { route: '/token', secured: true }];
 	
 	var dt = new Date();
 	console.log('Auth Token Management Demo by ozkary.com');
@@ -162,7 +162,7 @@ helper.setSignedToken = function(user, res) {
 	var token = '';
     try {		
         
-        token = jwt.sign(user, appSecret, { 'expiresIn': 60 }); //in seconds
+        token = jwt.sign(user, appSecret, { 'expiresIn': 120 }); //in seconds
         if (res) {
             res.setHeader(appAuthHeader, token);                            //adding header with token    
             res.setHeader('Access-Control-Expose-Headers', appAuthHeader);  //allowing cors access                

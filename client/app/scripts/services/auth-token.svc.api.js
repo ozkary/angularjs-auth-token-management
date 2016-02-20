@@ -63,7 +63,8 @@
             //example of how it can be done for a single request
             //var header = { headers: { 'Authorization': 'Bearer  jdjs...' } };
             var header = {};
-            header['headers'] = $svcAuth.getAuthHeader();          
+            //0g-todo 1 add header to single request
+            header['headers'] = $svcAuth.getAuthHeader();
             var promise = $http.get(url, header);
 
             return promise;
@@ -82,6 +83,7 @@
                 var token = resp.headers($appSettings.http.header);
                 $svcAuth.login(token);
 
+                //0g-todo 2 add header globally
                 //configuring a global way to set the token after login
                 $http.defaults.headers.common = $svcAuth.getAuthHeader();
 
