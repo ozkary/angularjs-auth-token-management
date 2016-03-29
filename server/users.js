@@ -40,6 +40,22 @@
         userClaims: userClaims
     }
     
+    /**
+     * defines the application claims
+     * format:
+     * module/area/element
+    **/
+    var appClaims = {
+        'app://auth-token/login/validate': '',
+        'app://auth-token/about/':'',
+        'app://auth-token/about/email':'',
+        'app://auth-token/about/load':'',
+        'app://auth-token/claims/':'',
+        'app://auth-token/claims/add':'',
+        'app://auth-token/claims/delete':'',
+        'app://auth-token/claims/update':''        
+    }
+    
     //simple login
     function login(username, password){
         var user = this.list[username];
@@ -67,10 +83,14 @@
     function userClaims(user){
         var claims = {};
         if (user) {
+            //set the application claims
+            claims.appClaims = appClaims;
+            //user claims
             claims.username = user.username;
             claims.firstname = user.firstname;
             claims.email = user.email;
             claims.id = user.id;
+                     
         }
 
         return claims;

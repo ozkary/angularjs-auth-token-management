@@ -39,11 +39,7 @@
           </div>
 
           <div class="collapse navbar-collapse" id="js-navbar-collapse">
-
-            <ul class="nav navbar-nav">
-              <li ng-class="{'active':route=='/'}"><a href="#/">Login</a></li>             
-              <li ng-class="{'active':route=='/about'}"><a ng-href="#/about">About me</a></li>
-            </ul>
+            <div ng-include="'views/_menu.html'"></div>            
           </div>
         </div>
       </div>
@@ -82,10 +78,13 @@
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/auth-token.app.js"></script>
+         <script src="scripts/auth-token.config.js"></script>
         <script src="scripts/services/auth-token.svc.auth.js"></script>
         <script src="scripts/services/auth-token.svc.token.js"></script>
         <script src="scripts/services/auth-token.svc.api.js"></script>
         <script src="scripts/services/auth-token.svc.msg.js"></script>
+        <script src="scripts/directives/auth-token.dir.auth.js"></script>
+        <script src="scripts/controllers/auth-token.ctrl.menu.js"></script>
         <script src="scripts/controllers/auth-token.ctrl.main.js"></script>
         <script src="scripts/controllers/auth-token.ctrl.about.js"></script>
         <!-- endbuild -->

@@ -20,9 +20,9 @@
     'use strict';
     var svcName = '$svcMsg';
     var app = angular.module('ozkary.authtoken');
-    app.factory(svcName, ['$http', '$appSettings', '$timeout', '$rootScope', '$log', svcApi]);
+    app.factory(svcName, ['$http', '$appSettings', '$timeout', '$rootScope', '$log', svcMsg]);
 
-    function svcApi($http, $appSettings, $timeout, $rootScope, $log) {
+    function svcMsg($http, $appSettings, $timeout, $rootScope, $log) {
         var baseUrl = $appSettings;
         var svc = {
             name: svcName,

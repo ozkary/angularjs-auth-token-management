@@ -10,7 +10,8 @@
     "express": "^4.13.4",
     "express-jwt": "^3.3.0",
     "jsonwebtoken": "^5.7.0",
-    "morgan": "^1.6.1"
+    "morgan": "^1.6.1",
+    "grunt": "^0.4.5"
   },
   "description": "jwt server demo to protect APIs",
   "license": "MIT",

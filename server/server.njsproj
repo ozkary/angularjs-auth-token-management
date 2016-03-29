@@ -30,6 +30,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="GruntFile.js" />
     <Compile Include="server.js" />
     <Compile Include="messages.js" />
     <Compile Include="users.js" />

@@ -18,21 +18,18 @@
 
 (function () {
     'use strict';   
-    var app = angular.module('ozkary.authtoken', ['ngRoute']);
-    app.config(['$routeProvider', '$httpProvider', appConfig]);
-    app.run(['$rootScope', '$location', '$http', '$svcAuth', runApp]);
-
-    var appSettings = {
-        apiUrl: 'http://localhost:3001/api',
-        http: { header: 'Authorization', token: 'Bearer ' },
-        messages: {success:'You have access', noAccess:'No Access'}
-    }
-    app.constant('$appSettings', appSettings);
-       
-    function runApp($rootScope, $location, $http, $svcAuth) {
-        $rootScope.$on('$locationChangeSuccess', function () {          
+    var app = angular.module('ozkary.authtoken', ['ngRoute']);   
+    app.run(['$rootScope', '$location', '$http', '$svcAuth', '$svcMsg', '$route', runApp]);
+        
+    function runApp($rootScope, $location, $http, $svcAuth, $svcMsg, $route) {
+        $rootScope.$on('$routeChangeSuccess', function () {          
             $rootScope.route = $location.$$path;           
         });
+
+        $rootScope.$on('$routeChangeError', function (evt, current, previous, reject) {
+            evt.preventDefault();
+            $svcMsg.error(reject.message);           
+        });       
        
         //a way to add tokens to all requests via service
         //$http.defaults.headers.common = { 'Authorization': 'Bearer jdjs...' };
@@ -40,40 +37,7 @@
         //0g-todo 4 initialize token from storage
         //initialize any auth token already in storage
          $svcAuth.waitForAuth();              
-    }
-   
-    function appConfig($routeProvider, $httpProvider) {
-        $routeProvider
-          .when('/', {
-              templateUrl: 'views/main.html',
-              controller: 'ozkary.authtoken.ctrl.main',
-              controllerAs: 'ctrl'
-          })
-          .when('/about', {
-              templateUrl: 'views/about.html',
-              controller: 'ozkary.authtoken.ctrl.about',
-              controllerAs: 'ctrl'
-          })
-          .otherwise({
-              redirectTo: '/'
-          });
-
-        //add token interceptor
-        //$httpProvider.interceptors.push('$svcToken');
-
-        //a way to add tokens to all requests via provider
-        //$httpProvider.defaults.headers.common = { 'Authorization': 'Bearer jdjs...' };
-        
-        ////or just post 
-        //$httpProvider.defaults.headers.post = { 'Authorization': 'Bearer jdjs...' };
-
-        ////or just gets
-        //$httpProvider.defaults.headers.post = { 'Authorization': 'Bearer jdjs...' };
-
-        //0g-todo 5 add interceptors
-        //interceptor configuration
-        $httpProvider.interceptors.push('$svcToken');
-    }
+    }      
 
 })();
 

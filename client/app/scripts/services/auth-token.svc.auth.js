@@ -13,7 +13,8 @@
     * Created By oscar garcia 
     *
     * Update/Fix History
-    *   ogarcia 02162016 initial implementation
+    *   0garcia 02162016 initial implementation
+    *   0garcia 03242016 add the authorization logic - claim management
     *
     */
 
@@ -42,7 +43,8 @@
             saveToken:saveToken,
             getAuthHeader: getAuthHeader,
             getAuthToken: getAuthToken,
-            waitForAuth: waitForAuth
+            waitForAuth: waitForAuth,
+            hasClaim:hasClaim
         }
       
 
@@ -75,6 +77,7 @@
                     //update props with new claims
                     svc.identity.firstname = newIdentity.firstname;
                     svc.identity.username = newIdentity.username;
+                    svc.identity.appClaims = newIdentity.appClaims;
                 } else {
                     svc.identity = newIdentity;
                 }
@@ -130,6 +133,20 @@
         function waitForAuth() {
             var token = getToken();
             processToken(token);   
+        }
+
+        /**
+         * checks to see if the current user has a claim
+         */
+        function hasClaim(claims) {
+            var result = false;
+            var identity = svc.identity;           
+
+            if (claims && identity && identity.appClaims) {
+                result = identity.appClaims[claims] != null;   //true if exists                
+            }          
+
+            return result;
         }
 
         return svc;
