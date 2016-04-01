@@ -24,7 +24,25 @@
     var appSettings = {
         apiUrl: 'http://localhost:3001/api',
         http: { header: 'Authorization', token: 'Bearer ' },
-        messages: {success:'You have access', noAccess:'No Access'}
+        messages: { success: 'You have access', noAccess: 'No Access', updated: 'Your change was successful', removed: 'Item was removed' },
+        apiRoutes: {
+            token: {
+                requiredAuth: true,
+                claims:'app://auth-token/token/' //todo-auth rename token to test the api access
+            },
+            about: {
+                requiredAuth: true,
+                claims: 'app://auth-token/about/'
+            },
+            login: {
+                requiredAuth: false,
+                claims: ''
+            },
+            ping: {
+                requiredAuth: false,
+                claims: ''
+            }
+        }
     }
 
     /*app settings*/
@@ -48,10 +66,23 @@
         controller: "ozkary.authtoken.ctrl.about",
         controllerAs: "ctrl",
         redirectTo: '/noaccess',
-        claims: "app://auth-token/about/",
-        requiredAuth: true,
+        //claims: "app://auth-token/about/",    //todo-auth enable claim on menu
+        //requiredAuth: true,
         showMenu: true
-    }, {
+    },
+    //{
+    //    title: "Claims",                //todo-auth add claims module
+    //    url: "/claims",
+    //    icon: "",
+    //    templateUrl: "views/claims.html",
+    //    controller: "ozkary.authtoken.ctrl.claims",
+    //    controllerAs: "ctrl",
+    //    redirectTo: '/noaccess',
+    //    claims: "app://auth-token/claims/",
+    //    requiredAuth: true,
+    //    showMenu: true
+    //},
+    {
         title: "No Access",
         url: "/noaccess",
         icon: "",
@@ -81,7 +112,7 @@
                         templateUrl: route.templateUrl,
                         controller: route.controller,
                         controllerAs: route.controllerAs,                        
-                        //resolve: {
+                        //resolve: {  //todo-auth secure routes
                         //    "hasClaim": ["$svcAuth", "$route", function ($svcAuth, $route) {                                
                         //        var result = false;
                         //        if (route.requiredAuth) {

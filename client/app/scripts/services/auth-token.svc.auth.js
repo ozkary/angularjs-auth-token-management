@@ -44,7 +44,8 @@
             getAuthHeader: getAuthHeader,
             getAuthToken: getAuthToken,
             waitForAuth: waitForAuth,
-            hasClaim:hasClaim
+            hasClaim: hasClaim,
+            hasAccess:hasAccess
         }
       
 
@@ -81,7 +82,6 @@
                 } else {
                     svc.identity = newIdentity;
                 }
-
                 saveToken(token);
             }            
         }
@@ -141,12 +141,30 @@
         function hasClaim(claims) {
             var result = false;
             var identity = svc.identity;           
-
+           
+            //use promises for slow claim look up
+            //var deferred = $q.defer();
             if (claims && identity && identity.appClaims) {
                 result = identity.appClaims[claims] != null;   //true if exists                
-            }          
+            }
 
+            //deferred.resolve(result);
+            //return deferred.promise;
             return result;
+        }
+
+        /**
+        * determines if an API route should be protected with a claim raises exception when token is not found
+        * @param {type} apiRoute
+        */
+        function hasAccess(api) {           
+            var route = $appSettings.apiRoutes[api]; //route settings
+            if (route && route.requiredAuth) {
+                var result = svc.hasClaim(route.claims);
+                if (!result) {
+                    throw new Error($appSettings.messages.noAccess);
+                }
+            }           
         }
 
         return svc;

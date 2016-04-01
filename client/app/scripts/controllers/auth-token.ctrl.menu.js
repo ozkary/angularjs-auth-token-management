@@ -22,10 +22,12 @@
     app.controller(ctrlName, ['$svcAuth', '$appRoutes', '$filter', ctrlMenu]);
 	
     function ctrlMenu($svcAuth, $appRoutes, $filter) {
+        console.log('menu');
         var ctrl = this;
         this.name = ctrlName;
         var routes = $filter('filter')($appRoutes, { showMenu: true});
         ctrl.menu = routes;
+        ctrl.identity = $svcAuth.identity;       
     } 
    
 })();

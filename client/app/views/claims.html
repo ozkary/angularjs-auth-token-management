@@ -1,0 +1,33 @@
+﻿<div class="jumbotron">
+    <div class="container">
+        <h1 class="text-center">Claims</h1>
+        <i class="fa fa-key fa-5x"></i><br>
+        
+        <div id="secured" ng-if="ctrl.identity">           
+            <div class="lead">               
+                <div class="container">
+                    <h2>My Claims</h2>
+                    <!--todo-auth use isolated scope for multiple controls
+                         <authorize-scope authorize-mapping="ctrl.claimMapping" authorize-callback="ctrl.claimResults"></authorize-scope>
+                        ng-show="ctrl.deleteAccess"
+                        ng-show="ctrl.updateAccess"   
+                    -->
+                    <ul class="list-group text-left">
+                        <li ng-repeat="(key,value) in ctrl.claims" class="list-group-item">
+                            <input type="text" class="form-control-static form-input"  maxlength="25" ng-disabled="key !== ctrl.selected" value="{{key}}"/>                         
+                            <a authorize="app://auth-token/claims/delete" class="cursor-pointer" title="remove claim" ng-click="ctrl.remove(key)"><i class="fa fa-trash text-danger pull-right fa-2x"></i></a>                                                                              
+                            <a authorize="app://auth-token/claims/update"  class="cursor-pointer" title="edit claim" ng-click="ctrl.edit(key)"><i class="fa fa-edit pull-right fa-2x"></i></a>                                                                                     
+                        </li>                        
+                    </ul>
+                </div>
+            </div>
+        </div> 
+        
+        <div class="col-sm-12 col-xs-12 toolbar text-center" ng-if="ctrl.identity">
+            <button authorize="app://auth-token/claims/add" authorize-action="disabled" class="btn btn-lg btn-primary" type="button" ng-click="ctrl.add()">Add <i class="fa fa-plus"></i></button>
+            <button authorize="app://auth-token/claims/save" authorize-action="disabled" class="btn btn-lg btn-primary" type="button" ng-click="ctrl.save()">Save <i class="fa fa-save"></i></button>
+        </div>  
+    </div>
+    
+</div>
+

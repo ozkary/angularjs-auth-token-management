@@ -162,7 +162,7 @@ helper.setSignedToken = function(user, res) {
 	var token = '';
     try {		
         
-        token = jwt.sign(user, appSecret, { 'expiresIn': 120 }); //in seconds
+        token = jwt.sign(user, appSecret, { 'expiresIn': 1800 }); //in seconds
         if (res) {
             res.setHeader(appAuthHeader, token);                            //adding header with token    
             res.setHeader('Access-Control-Expose-Headers', appAuthHeader);  //allowing cors access                

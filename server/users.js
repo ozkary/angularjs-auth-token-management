@@ -13,7 +13,7 @@
 	'use strict';	
 	var user1 = {
 		username: 'ozkary@ozkary.com',
-		firstname: 'ozkary',
+		firstname: 'oscar',
 		lastname: 'garcia',
 		email: 'ozkary@ozkary.com',
 		id: 123123,
@@ -46,14 +46,15 @@
      * module/area/element
     **/
     var appClaims = {
-        'app://auth-token/login/validate': '',
+        'app://auth-token/token/': '',
         'app://auth-token/about/':'',
         'app://auth-token/about/email':'',
         'app://auth-token/about/load':'',
         'app://auth-token/claims/':'',
         'app://auth-token/claims/add':'',
         'app://auth-token/claims/delete':'',
-        'app://auth-token/claims/update':''        
+        'app://auth-token/claims/update': '',
+        'app://auth-token/claims/save':''        
     }
     
     //simple login
