@@ -1,6 +1,7 @@
 ﻿<div ng-controller="ozkary.authtoken.ctrl.menu as ctrl">   
     <ul class="nav navbar-nav">      
-        <li ng-if="!item.requiredAuth || ctrl.identity" ng-repeat="item in ctrl.menu" ng-class="{'active':route==item.url}" ><a ng-href="#{{item.url}}">{{item.title}}</a></li>
+        <li authorize="{{item.claims}}"  ng-if="!item.requiredAuth || ctrl.identity"
+            ng-repeat="item in ctrl.menu" ng-class="{'active':route==item.url}" ><a ng-href="#{{item.url}}">{{item.title}}</a></li>
     </ul>
-    <!-- todo-authorize="{{item.claims}}"-->
+    <!-- todo-authorize="{{item.claims}}"  ng-if="!item.requiredAuth || ctrl.identity"-->
 </div>

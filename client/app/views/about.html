@@ -14,7 +14,7 @@
             <div class="container">
                 <h2>My Profile</h2>
                 <ul class="list-group text-left">                    
-                    <li class="list-group-item"><b>eMail:</b> {{ctrl.user.username}}</li>
+                    <li authorize="app://auth-token/about/email" class="list-group-item"><b>eMail:</b> {{ctrl.user.username}}</li>
                     <li class="list-group-item"><b>First Name:</b> {{ctrl.user.firstname}}</li>
                     <li class="list-group-item"><b>Last Name:</b> {{ctrl.user.lastname}}</li>
                     <li class="list-group-item"><b>Likes :</b> {{ctrl.user.likes}}</li>
@@ -24,4 +24,13 @@
         </div>    
     </div>    
  </div>
-<div ng-include="'views/_toolbar.html'"></div>
+<div class="row">
+    <div class="col-sm-6 col-xs-12 toolbar">
+        <button class="btn btn-lg btn-success" type="button" ng-click="ctrl.ping()">Ping - No token needed <i class="fa fa-unlock"></i></button>
+    </div>
+
+    <div class="col-sm-6 col-xs-12 toolbar">
+        <button authorize="app://auth-token/about/load" authorize-action="disabled" class="btn btn-lg btn-danger" ng-if="ctrl.identity" type="button" ng-click="ctrl.profile()">Load - About <i class="fa fa-lock"></i></button>
+    </div>
+    <!--todo-authorize="app://auth-token/about/load" authorize-action="disabled" -->
+</div>

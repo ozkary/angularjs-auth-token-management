@@ -66,22 +66,22 @@
         controller: "ozkary.authtoken.ctrl.about",
         controllerAs: "ctrl",
         redirectTo: '/noaccess',
-        //claims: "app://auth-token/about/",    //todo-auth enable claim on menu
-        //requiredAuth: true,
+        claims: "app://auth-token/about/",    //todo-auth enable claim on menu
+        requiredAuth: true,
         showMenu: true
     },
-    //{
-    //    title: "Claims",                //todo-auth add claims module
-    //    url: "/claims",
-    //    icon: "",
-    //    templateUrl: "views/claims.html",
-    //    controller: "ozkary.authtoken.ctrl.claims",
-    //    controllerAs: "ctrl",
-    //    redirectTo: '/noaccess',
-    //    claims: "app://auth-token/claims/",
-    //    requiredAuth: true,
-    //    showMenu: true
-    //},
+    {
+        title: "Claims",                //todo-auth add claims module
+        url: "/claims",
+        icon: "",
+        templateUrl: "views/claims.html",
+        controller: "ozkary.authtoken.ctrl.claims",
+        controllerAs: "ctrl",
+        redirectTo: '/noaccess',
+        claims: "app://auth-token/claims/",
+        requiredAuth: true,
+        showMenu: true
+    },
     {
         title: "No Access",
         url: "/noaccess",
@@ -112,19 +112,19 @@
                         templateUrl: route.templateUrl,
                         controller: route.controller,
                         controllerAs: route.controllerAs,                        
-                        //resolve: {  //todo-auth secure routes
-                        //    "hasClaim": ["$svcAuth", "$route", function ($svcAuth, $route) {                                
-                        //        var result = false;
-                        //        if (route.requiredAuth) {
-                        //            var result = $svcAuth.hasClaim(route.claims);
-                        //            if (!result) {
-                        //                $route.current.$$route.redirectTo = route.redirectTo;
-                        //                throw new Error($appSettings.messages.noAccess);
-                        //            }
-                        //        }
-                        //        return result;
-                        //    }]
-                        //}
+                        resolve: {  //todo-auth secure routes
+                            "hasClaim": ["$svcAuth", "$route", function ($svcAuth, $route) {                                
+                                var result = false;
+                                if (route.requiredAuth) {
+                                    var result = $svcAuth.hasClaim(route.claims);
+                                    if (!result) {
+                                        $route.current.$$route.redirectTo = route.redirectTo;
+                                        throw new Error($appSettings.messages.noAccess);
+                                    }
+                                }
+                                return result;
+                            }]
+                        }
                     });                
             }
         });

@@ -20,14 +20,14 @@
     'use strict';   
     var app = angular.module('ozkary.authtoken', ['ngRoute']);   
     app.run(['$rootScope', '$location', '$http', '$svcAuth', '$svcMsg', '$route', runApp]);
-    //app.factory('$exceptionHandler', ['$injector', function ($injector) { //todo-auth add app error handler
-    //    return function (err, cause) {
-    //        var $svcMsg = $injector.get('$svcMsg');
-    //        if ($svcMsg) {
-    //            $svcMsg.error(err.message);
-    //        }           
-    //    };
-    //}]);
+    app.factory('$exceptionHandler', ['$injector', function ($injector) { //todo-auth add app error handler
+        return function (err, cause) {
+            var $svcMsg = $injector.get('$svcMsg');
+            if ($svcMsg) {
+                $svcMsg.error(err.message);
+            }           
+        };
+    }]);
         
     function runApp($rootScope, $location, $http, $svcAuth, $svcMsg, $route) {
         $rootScope.$on('$routeChangeSuccess', function () {          
@@ -37,7 +37,11 @@
         $rootScope.$on('$routeChangeError', function (evt, current, previous, reject) {
             evt.preventDefault();
             $svcMsg.error(reject.message);           
-        });       
+        });
+
+        //$rootScope.$on("$routeChangeStart", function (event, next, current) {
+        //   //authorize and redirect here
+        //});
        
         //a way to add tokens to all requests via service
         //$http.defaults.headers.common = { 'Authorization': 'Bearer jdjs...' };

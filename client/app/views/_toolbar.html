@@ -4,7 +4,7 @@
     </div>
 
     <div class="col-sm-6 col-xs-12 toolbar">      
-        <button class="btn btn-lg btn-danger" ng-if="ctrl.identity" type="button" ng-click="ctrl.profile()">Load - About <i class="fa fa-lock"></i></button>
+        <button authorize="app://auth-token/about/load" authorize-action="disabled" class="btn btn-lg btn-danger" ng-if="ctrl.identity" type="button" ng-click="ctrl.profile()">Load - About <i class="fa fa-lock"></i></button>
     </div>
    <!--todo-authorize="app://auth-token/about/load" authorize-action="disabled" -->
 </div>

@@ -21,12 +21,12 @@
     'use strict';
     var ctrlName = 'ozkary.authtoken.ctrl.claims';
     var app = angular.module('ozkary.authtoken');
-    app.controller(ctrlName, ['$svcApi', '$svcMsg', '$svcAuth', '$appSettings', ctrlClaims]);
+    app.controller(ctrlName, ['$svcApi', '$svcMsg', '$svcAuth', '$appSettings','$scope', ctrlClaims]);
        
-    function ctrlClaims($svcApi, $svcMsg, $svcAuth, $appSettings) {
+    function ctrlClaims($svcApi, $svcMsg, $svcAuth, $appSettings, $scope) {
         var ctrl = this;
         ctrl.name = ctrlName;       
-        ctrl.identity = $svcAuth.identity;
+        $scope.identity = ctrl.identity = $svcAuth.identity;
         if (ctrl.identity) {
             ctrl.claims = ctrl.identity.appClaims;
         }

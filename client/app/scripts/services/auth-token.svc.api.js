@@ -47,7 +47,7 @@
          * @returns {type} 
          */
         function token() {
-            //$svcAuth.hasAccess('token');//todo-auth enable api access
+            $svcAuth.hasAccess('token');//todo-auth enable api access
             var url = baseUrl + '/token';
             var promise = $http.get(url);
             return promise;
@@ -58,7 +58,7 @@
          * @returns {type} 
          */
         function about() {
-            //$svcAuth.hasAccess('about');//todo-auth enable api access
+            $svcAuth.hasAccess('about');//todo-auth enable api access
             var url = baseUrl + '/about';
             var header = {};
 

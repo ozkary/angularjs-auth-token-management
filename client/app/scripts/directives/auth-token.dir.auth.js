@@ -63,7 +63,9 @@
                     }
                                     
                 };
-                //scope.$watch(function () { return $svcAuth.identity; }, watch)  //must watch identity changes only (login/logout)   
+
+                //scope.$watch(attrs.authorizeScope, watch,true)
+                //scope.$watch(function () { return $svcAuth.identity; }, watch)  //must watch identity changes only (login/logout)                
                 scope.$watch(watch);  //watch over all controller scope - expensive            
             }
         };
