@@ -9,3 +9,8 @@ AngularJS SPA which interacts with a NodeJS server to demo calls to secured APIS
 
 Server:
 NodeJS server with open and secured APIs. The API are secured with a JWT token
+
+Branches:
+
+Master Branch:  Use this branch to take a look at how an application can consume and manage a security token(JWT)
+Auth Branch:    Use this branch to look at the version of the code that contains the authorization changes. 
