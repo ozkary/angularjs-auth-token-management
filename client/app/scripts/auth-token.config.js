@@ -21,33 +21,39 @@
     var app = angular.module('ozkary.authtoken');
     app.config(['$routeProvider', '$httpProvider', '$appRoutes','$appSettings', appConfig]);
 
+    /*api routes*/
+    var apiRoutes = {
+        token: {
+            requiredAuth: true,
+            claims: 'app://auth-token/token/-no' //todo-auth rename token to test the api access
+        },
+        about: {
+            requiredAuth: true,
+            claims: 'app://auth-token/about/'
+        },
+        login: {
+            requiredAuth: false,
+            claims: ''
+        },
+        ping: {
+            requiredAuth: false,
+            claims: ''
+        }
+    };
+
+
     var appSettings = {
         apiUrl: 'http://localhost:3001/api',
         http: { header: 'Authorization', token: 'Bearer ' },
         messages: { success: 'You have access', noAccess: 'No Access', updated: 'Your change was successful', removed: 'Item was removed' },
-        apiRoutes: {
-            token: {
-                requiredAuth: true,
-                claims:'app://auth-token/token/' //todo-auth rename token to test the api access
-            },
-            about: {
-                requiredAuth: true,
-                claims: 'app://auth-token/about/'
-            },
-            login: {
-                requiredAuth: false,
-                claims: ''
-            },
-            ping: {
-                requiredAuth: false,
-                claims: ''
-            }
-        }
+        apiRoutes: apiRoutes
     }
 
+   
     /*app settings*/
     app.constant('$appSettings', appSettings);
 
+    /*app routes*/
     var appRoutes = [{       
         title: "Login",
         url: "/",        
@@ -112,19 +118,21 @@
                         templateUrl: route.templateUrl,
                         controller: route.controller,
                         controllerAs: route.controllerAs,                        
-                        resolve: {  //todo-auth secure routes
-                            "hasClaim": ["$svcAuth", "$route", function ($svcAuth, $route) {                                
-                                var result = false;
-                                if (route.requiredAuth) {
-                                    var result = $svcAuth.hasClaim(route.claims);
-                                    if (!result) {
-                                        $route.current.$$route.redirectTo = route.redirectTo;
-                                        throw new Error($appSettings.messages.noAccess);
-                                    }
-                                }
-                                return result;
-                            }]
-                        }
+                        //resolve: {  //todo-auth secure routes
+                        //    "hasClaim": ["$svcAuth", "$route", function ($svcAuth, $route) {                                
+                        //        var result = false;
+                        //        if (route.requiredAuth) {
+                        //            var result = $svcAuth.hasClaim(route.claims);
+                        //            if (!result) {                                       
+                        //               $route.current.noAccess = route.redirectTo;
+                        //                throw new Error($appSettings.messages.noAccess);                                                                                
+                        //            } else {                                        
+                        //                $route.current.noAccess = null;                                        
+                        //            }
+                        //        }
+                        //        return result;
+                        //    }]
+                        //}
                     });                
             }
         });

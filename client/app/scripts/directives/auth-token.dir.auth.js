@@ -95,7 +95,7 @@
             link: function (scope, elem, attrs) {
 
                 var watch = function () {
-                    //get the claim to variable maps
+                    //get the claim to variable maps - execute call for claim mapping
                     var claims = scope.authorizeMapping()();
                     var callback = scope.authorizeCallback();
                     if (claims && typeof (claims) === 'object') {

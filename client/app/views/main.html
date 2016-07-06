@@ -24,20 +24,14 @@
   </div>
 </div>
 
-<div>
-    <div class="row">
-        <div class="col-sm-6 col-xs-12 toolbar">
-            <button class="btn btn-lg btn-success" type="button" ng-click="ctrl.ping()">Ping - No token needed <i class="fa fa-unlock"></i></button>
-        </div>
-        <div class="col-sm-6 col-xs-12 toolbar">
-            <button class="btn btn-lg btn-danger" auth authorize="app://auth-token/token/" authorize-action="disabled"
-                    ng-if="ctrl.identity" type="button" ng-click="ctrl.token()">Validate Token <i class="fa fa-lock"></i></button>
-            <!--todo-auth authorize="app://auth-token/token/" authorize-action="disabled"-->
-        </div>        
-    </div>
-    <div class="row">
-        <div class="col-sm-6 col-xs-12 toolbar">
-            <button class="btn btn-lg btn-danger" ng-if="ctrl.identity" type="button" ng-click="ctrl.logout()">Logout <i class="fa fa-sign-out"></i></button>
-        </div>
-    </div>
-</div>
+<section class="pagination">    
+    <div class="btn-toolbar" role="toolbar">        
+            <button class="btn btn-lg btn-success" type="button" ng-click="ctrl.ping()">Ping - No token <i class="fa fa-unlock"></i></button>              
+            <button class="btn btn-lg btn-danger"
+                    ng-if="ctrl.identity" type="button" ng-click="ctrl.token()">
+                Validate Token <i class="fa fa-lock"></i>
+            </button>
+            <!--todo-auth authorize="app://auth-token/token/" authorize-action="disabled"-->               
+            <button class="btn btn-lg btn-danger" ng-if="ctrl.identity" type="button" ng-click="ctrl.logout()">Logout <i class="fa fa-sign-out"></i></button>        
+    </div> 
+</section>

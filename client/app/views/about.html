@@ -24,13 +24,12 @@
         </div>    
     </div>    
  </div>
-<div class="row">
-    <div class="col-sm-6 col-xs-12 toolbar">
-        <button class="btn btn-lg btn-success" type="button" ng-click="ctrl.ping()">Ping - No token needed <i class="fa fa-unlock"></i></button>
-    </div>
-
-    <div class="col-sm-6 col-xs-12 toolbar">
-        <button authorize="app://auth-token/about/load" authorize-action="disabled" class="btn btn-lg btn-danger" ng-if="ctrl.identity" type="button" ng-click="ctrl.profile()">Load - About <i class="fa fa-lock"></i></button>
-    </div>
-    <!--todo-authorize="app://auth-token/about/load" authorize-action="disabled" -->
-</div>
+<section class="pagination">
+    <div class="btn-toolbar" role="toolbar">
+        <button class="btn btn-lg btn-success" type="button" ng-click="ctrl.ping()">Ping - No token <i class="fa fa-unlock"></i></button>      
+        <button authorize="app://auth-token/about/load" authorize-action="disabled"
+         class="btn btn-lg btn-danger" ng-if="ctrl.identity" type="button" ng-click="ctrl.profile()">Load - About <i class="fa fa-lock"></i></button>
+        <!--todo-authorize="app://auth-token/about/load" authorize-action="disabled" -->
+   </div>
+    
+</section>

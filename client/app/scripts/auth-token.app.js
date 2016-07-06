@@ -35,7 +35,8 @@
         });
 
         $rootScope.$on('$routeChangeError', function (evt, current, previous, reject) {
-            evt.preventDefault();
+            //evt.preventDefault();
+            $location.path(current.noAccess);
             $svcMsg.error(reject.message);           
         });
 
